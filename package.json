@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/Damcarrizo/backend2/issues"
   },
-  "homepage": "https://github.com/Damcarrizo/backend2#readme"
+  "homepage": "https://github.com/Damcarrizo/backend2#readme",
+  "dependencies": {
+    "moment": "^2.29.4"
+  }
 }
