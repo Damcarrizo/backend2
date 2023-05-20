@@ -32,3 +32,125 @@
 // Se llamará al método “getProductById” y se corroborará que devuelva el producto con el id especificado, en caso de no existir, debe arrojar un error.
 // Se llamará al método “updateProduct” y se intentará cambiar un campo de algún producto, se evaluará que no se elimine el id y que sí se haya hecho la actualización.
 // Se llamará al método “deleteProduct”, se evaluará que realmente se elimine el producto o que arroje un error en caso de no existir.
+
+const fs = require('fs')
+
+class ProductManager {
+
+    #products
+    #path
+    
+    
+        constructor(){
+            this.#products = [];
+            this.#path = 'products.json';
+            this.#addFile();
+        }
+    
+        #addFile (){
+            if(fs.existsSync(this.#path)){
+                const dataProducts = fs.readFileSync(this.#path, 'utf-8');
+                this.#products = JSON.parse(dataProducts); 
+            }else{
+                const data = JSON.stringify(this.#products)
+                fs.writeFileSync(this.#path, data)
+
+            }
+        }
+
+
+
+        getProducts () {
+            return this.#products
+            }
+    
+        addProducts = (title, description, price, thumbnail, code, stock) => {
+            const product = {
+                id: this.#products.length +1,
+                title,
+                description,
+                price,
+                thumbnail,
+                code,
+                stock,
+            }
+    
+            const existsProduct = this.#products.find((element)=>{
+               return element.id == product.id
+            })
+    
+            const existsCode = this.#products.find((element)=>{
+                return element.code == product.code 
+        })
+    
+            if (existsProduct || existsCode) {
+                console.log('Error: Producto ya agregado, verifique la info ');
+              
+        }else{
+            this.#products.push(product);
+            const data = JSON.stringify(this.#products)
+            fs.writeFileSync(this.#path, data)
+            console.log('Producto nuevo agregado');
+        }
+        }
+    
+        getProductById(id) {
+            return this.#products.find((element) => {
+                return element.id == id
+            }) || 'ID no encontrado';
+        }
+
+        updateProduct(id, key, value) {
+            const products = this.getProducts();
+            const product = products.find(product => product.id === id);
+    
+            
+            if (!product) {
+                return `No hay un producto con ese ${id}`;
+                
+            } else if (!(key in product)) {
+                return `No hay dato "${key}" en el producto ${id}`;
+                
+            } else if (!value) {
+                return `el valor es incorrecto`;
+            } else {
+                product[key] = value;
+                
+                try {
+                    fs.writeFileSync(this.#path, JSON.stringify(products));
+                } catch (err) {
+                    return `Error: ${err}`;
+                };
+            };
+        };
+    
+        deleteProduct(id) {
+            const products = this.getProducts();
+            const productList= products.findIndex(product => product.id === id);
+    
+            
+            if (productList !== -1) {
+                products.splice(productList, 1);
+                try {
+                    fs.writeFileSync(this.#path, JSON.stringify(products));
+                } catch (err) {
+                    return `Error: ${err}`;
+                };
+            } else {
+                return `No hay prodcutos con el id: ${id}`;
+            };
+        };
+    }
+    
+    const product1=  new ProductManager();
+    
+    
+    
+    console.log(product1.addProducts('vaso vidrio', 'vasos', 20, 'no def', '1234', 23))
+    console.log(product1.addProducts('tenedor', 'cubiertos', 20, 'no def', '2345', 23))
+    console.log(product1.addProducts('tenedor', 'cubiertos', 20, 'no def', '2345', 23))
+    console.log(product1.getProducts());
+    console.log(product1.getProductById(1));
+    console.log(product1.getProductById(3));
+    console.log(product1.updateProduct(1,'title','vaso plastico'));
+    console.log(product1.deleteProduct(2));
