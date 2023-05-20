@@ -14,18 +14,22 @@
 
 
 class ProductManager {
+
+#products
+
+
     constructor(){
-        this.products = []
+        this.#products = []
     }
 
     
     getProducts () {
-        return this.products
+        return this.#products
         }
 
     addProducts = (title, description, price, thumbnail, code, stock) => {
         const product = {
-            id: this.products.length +1,
+            id: this.#products.length +1,
             title,
             description,
             price,
@@ -34,8 +38,27 @@ class ProductManager {
             stock,
         }
 
+        const existsProduct = this.#products.find((element)=>{
+           return element.id == product.id
+        })
 
-        this.products.push(product);
+        const existsCode = this.#products.find((element)=>{
+            return element.code == product.code 
+    })
+
+        if (existsProduct || existsCode) {
+            console.log('Error: Producto ya agregado, verifique la info ');
+          
+    }else{
+        this.#products.push(product);
+        console.log('Producto nuevo agregado');
+    }
+    }
+
+    getProductById(id) {
+        return this.#products.find((element) => {
+            return element.id == id
+        }) || 'ID no encontrado';
     }
 }
 
@@ -43,7 +66,9 @@ const product1=  new ProductManager();
 
 
 
-console.log(product1.addProducts('queso', 'queso', 20, 'no def', 'abc2', 23))
-console.log(product1.addProducts('queso', 'queso', 20, 'no def', 'abc2', 23))
-console.log(product1.addProducts('queso', 'queso', 20, 'no def', 'abc2', 23))
-console.log(product1.getProducts())
+console.log(product1.addProducts('vaso vidrio', 'vasos', 20, 'no def', '1234', 23))
+console.log(product1.addProducts('tenedor', 'cubiertos', 20, 'no def', '2345', 23))
+console.log(product1.addProducts('tenedor', 'cubiertos', 20, 'no def', '2345', 23))
+console.log(product1.getProducts());
+console.log(product1.getProductById(1));
+console.log(product1.getProductById(3));
