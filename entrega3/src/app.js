@@ -1,5 +1,5 @@
 import express from 'express'
-import ProductManager from '../productManager'
+import ProductManager from '../productManager.js'
 
 const app = express()
 
@@ -7,6 +7,12 @@ app.use(express.urlencoded({extended:true}))
 
 app.get('/products', (req,res) => {
     res.send('Lista de productos')
+})
+
+app.get('/products',(req,res)=>{
+    let{limit} = req.query;
+    let productsLimit = products.slice(0,parseInt(limit))
+    res.send(productsLimit);
 })
 
 app.get('/products/:pid',(req,res) => {
