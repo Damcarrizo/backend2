@@ -129,6 +129,8 @@ class ProductManager {
         };
     }
     
+export default ProductManager
+
     const product1=  new ProductManager();
     
     

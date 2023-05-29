@@ -1,5 +1,5 @@
 import express from 'express'
-import ProductManager from '../productManager.js'
+//import ProductManager from '../productManager.js'
 
 const app = express()
 
@@ -16,8 +16,8 @@ app.get('/products',(req,res)=>{
 })
 
 app.get('/products/:pid',(req,res) => {
-    const {id} = req.params;
-    const product = products.find(product=> product.id == id)
+    const {pid} = req.params;
+    const product = products.find(product=> product.id == pid)
     if(product) return res.json(product);
     res.json({error:'Producto no encontrado, intente de nuevo'})
 })
