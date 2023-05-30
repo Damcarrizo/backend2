@@ -25,7 +25,7 @@ class ProductManager {
     
         constructor(){
             this.#products = [];
-            this.#path = 'products.json';
+            this.#path = './src/products.json';
             this.#addFile();
         }
     
@@ -43,7 +43,8 @@ class ProductManager {
 
 
         getProducts () {
-            return this.#products
+            const dataProducts = fs.readFileSync(this.#path, 'utf-8')
+            return JSON.parse(dataProducts)
             }
     
         addProducts = (title, description, price, thumbnail, code, stock) => {
@@ -130,26 +131,3 @@ class ProductManager {
     }
     
 export default ProductManager
-
-    const product1=  new ProductManager();
-    
-    
-    
-    console.log(product1.addProducts('vaso vidrio', 'vasos', 20, 'no def', '1234', 23))
-    console.log(product1.addProducts('tenedor', 'cubiertos', 20, 'no def', '2345', 23))
-    console.log(product1.addProducts('tenedor', 'cubiertos', 20, 'no def', '2345', 23))
-    console.log(product1.addProducts('vaso cristal', 'vasos', 20, 'no def', '1235', 23))
-    console.log(product1.addProducts('cuchara', 'cubiertos', 20, 'no def', '1236', 23))
-    console.log(product1.addProducts('sarten', 'sartenes', 20, 'no def', '1237', 23))
-    console.log(product1.addProducts('cacerola', 'olla', 20, 'no def', '1238', 23))
-    console.log(product1.addProducts('espumadera', 'utensillos', 20, 'no def', '1239', 23))
-    console.log(product1.addProducts('palo de amazar', 'utensillos', 20, 'no def', '2346', 23))
-    console.log(product1.addProducts('taza', 'vasos', 20, 'no def', '2347', 23))
-    console.log(product1.addProducts('taza cafe', 'vasos', 20, 'no def', '2348', 23))
-    console.log(product1.addProducts('taza cafe', 'vasos', 'no def', '2348', 23))
-
-    console.log(product1.getProducts());
-    console.log(product1.getProductById(1));
-    console.log(product1.getProductById(3));
-    console.log(product1.updateProduct(1,'title','vaso plastico'));
-    console.log(product1.deleteProduct(2));
